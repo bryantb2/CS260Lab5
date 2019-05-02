@@ -1,0 +1,14 @@
+bubbleUp()
+
+~compare to parent and swap
+	if smaller, swap until the smallest value is the parent
+
+remvoe from heap()
+
+~take root
+	remove last value on right to root, then comapre
+	if root is greater than its children, take the smallest child and switch
+	repeat until the child is not less than the parent
+
+heap provides priority queue function in log(N) time rather than o(n) time
+	weakly ordered, binary tree, not used for searching
