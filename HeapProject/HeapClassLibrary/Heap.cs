@@ -51,28 +51,46 @@ namespace HeapClassLibrary
             }
         }
 
-
-
         //Public Class Methods
         public int Remove()
         {
+            if (heapArray[0] == EMPTY && heapArray[1] == EMPTY)
+            {
+                throw new ArgumentException("Cannot remove from an empty heap");
+            }
             int temp = heapArray[0];
             heapArray[0] = EMPTY;
-            Sort();
+            Sort(0); //this sorts from the top down and places the largest value at the top
+            return temp;
         }
 
-        public void Insert()
+        public void Insert(int value)
         {
-
+            //adds value to heap under condition that the heap is not full
+            //call traverseTree and pass in first heap 0 index
+            //use the returned traverse index to add value
+            //call sort method
+            if (IsHeapFull() == true)
+            {
+                BuildNewHeap();
+                int addAtIndex = TraverseTree(0);
+                AddValue(addAtIndex, value);
+                Sort(addAtIndex);
+            }
+            else
+            {
+                int addAtIndex = TraverseTree(0);
+                AddValue(addAtIndex, value);
+                Sort(addAtIndex);
+            }
         }
 
         //Private Class Methods
         //this will walk the tree and return the index of the element to be changed
         private int TraverseTree(int index)
         {
-            int currentParent = index;
             //start at root
-                //if root is null, return EMPTY
+                //if root is null return 0
                 //if root is not null
                     //test left
                     //if left is not empty, test right
@@ -80,18 +98,27 @@ namespace HeapClassLibrary
                     //if left is empty
             if(heapArray[0] == EMPTY)
             {
-                return EMPTY;
+                return 0;
             }
-            if (Left(index) != EMPTY)
+            if (heapArray[Left(index)] != EMPTY)
             {
                 index = Left(index);
                 TraverseTree(index);
             }
-            index = Parent(index);
-            if (Right(index) != EMPTY)
+            if (heapArray[Right(index)] != EMPTY)
             {
                 index = Right(index);
                 TraverseTree(index);
+            }
+            else if (heapArray[Left(index)] == EMPTY && heapArray[Right(index)] == EMPTY)
+            {
+                return Left(index);
+            }
+            //index = Parent(index);
+            
+            else if (heapArray[Right(index)] == EMPTY)
+            {
+                return Right(index);
             }
             return index;
         }
@@ -162,18 +189,20 @@ namespace HeapClassLibrary
         private int Left(int index)
         {
             //this will return the value of a left index
-            return 2*index + 1;
+            index = 2 * index + 1;
+            return index;
         }
 
         private int Right(int index)
         {
             //this will return the value of a right index
-            return 2 * index + 2;
+            index = 2 * index + 2;
+            return index;
         }
 
         private int Parent(int index)
         {
-            return (index - 1) / 2;
+            return index = (index - 1) / 2;
         }
 
         //this fills a new instance of a heap array with -1's
@@ -207,5 +236,24 @@ namespace HeapClassLibrary
             this.size = (this.size * 2);
         }
 
+        private bool IsHeapFull()
+        {
+            int fullCounter = 0;
+            for (int i =0; i <this.size; i++)
+            {
+                if (heapArray[i] != EMPTY)
+                {
+                    fullCounter++;
+                }
+            }
+            if (fullCounter == heapArray.Length)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
