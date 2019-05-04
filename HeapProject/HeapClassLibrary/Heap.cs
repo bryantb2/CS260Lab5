@@ -75,13 +75,13 @@ namespace HeapClassLibrary
                 BuildNewHeap();
                 int addAtIndex = TraverseTree(0);
                 AddValue(addAtIndex, value);
-                Sort(addAtIndex);
+                //Sort(addAtIndex);
             }
             else
             {
                 int addAtIndex = TraverseTree(0);
                 AddValue(addAtIndex, value);
-                Sort(addAtIndex);
+                //Sort(addAtIndex);
             }
         }
 
@@ -100,27 +100,24 @@ namespace HeapClassLibrary
             {
                 return 0;
             }
-            if (heapArray[Left(index)] != EMPTY && heapArray[Right(index)] != EMPTY)
-            {
-                index = Left(index);
-                TraverseTree(index);
-            }
-            if (heapArray[Right(index)] != EMPTY)
-            {
-                index = Right(index);
-                TraverseTree(index);
-            }
-            else if (heapArray[Left(index)] == EMPTY && heapArray[Right(index)] == EMPTY)
+            if (heapArray[Left(index)] == EMPTY && heapArray[Right(index)] == EMPTY)
             {
                 return Left(index);
             }
-            //index = Parent(index);
-            
             else if (heapArray[Right(index)] == EMPTY)
             {
                 return Right(index);
             }
-            return index;
+            else //(heapArray[Left(index)] != EMPTY && heapArray[Right(index)] != EMPTY)
+            {
+                return TraverseTree(Left(index));
+                return TraverseTree(Right(index));
+            }
+           /* if (heapArray[Right(index)] != EMPTY)
+            {
+                //index = Right(index);
+                TraverseTree(Right(index));
+            }*/
         }
 
         //this will rearrange the tree if a large value is a leaf, returns no values
@@ -186,15 +183,13 @@ namespace HeapClassLibrary
         private int Left(int index)
         {
             //this will return the value of a left index
-            index = 2 * index + 1;
-            return index;
+            return 2 * index + 1;
         }
 
         private int Right(int index)
         {
             //this will return the value of a right index
-            index = 2 * index + 2;
-            return index;
+            return 2 * index + 2;
         }
 
         private int Parent(int index)

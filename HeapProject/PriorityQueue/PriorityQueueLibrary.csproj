@@ -44,5 +44,11 @@
     <Compile Include="PriorityQueue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HeapClassLibrary\HeapClassLibrary.csproj">
+      <Project>{2d1accc0-9a19-4cd1-a6b7-b0cdc724157a}</Project>
+      <Name>HeapClassLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

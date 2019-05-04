@@ -56,21 +56,33 @@ namespace UnitTesting
             heapObj.Insert(30);
             heapObj.Insert(10);
             heapObj.Insert(40);
-            Assert.AreEqual(heapObj.LargestValue, 40);
+            heapObj.Insert(15);
+            heapObj.Insert(0);
+            heapObj.Insert(90);
+            heapObj.Insert(1750);
+            heapObj.Insert(50);
+            /*
+            heapObj.Insert(900);
+            heapObj.Insert(400);
+            heapObj.Insert(200);
+            heapObj.Insert(1010);
+            heapObj.Insert(102);
+            heapObj.Insert(101);
+            heapObj.Insert(101);*/
+            Assert.AreEqual(heapObj.LargestValue, 1750);
         }
 
-        
+        /*
         [Test]
         public void InsertDoublingTest()
         {
             /*fill heap, then insert another 
-            value that will force it to double*/
+            value that will force it to double
             int originalSize = heapObj.Size;
-            for (int i = 0; i <=heapObj.Size; i++)
+            for (int i = 0; i <heapObj.Size; i++)
             {
                 heapObj.Insert(i);
             }
-            heapObj.Insert(0);
             Assert.AreEqual((originalSize *2),heapObj.Size);
         }
         /*
