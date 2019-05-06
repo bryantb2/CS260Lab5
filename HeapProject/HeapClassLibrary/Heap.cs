@@ -12,6 +12,7 @@ namespace HeapClassLibrary
         private int size = 0;
         private const int EMPTY = -1;
         private int[] heapArray;
+        private int currentIndex = 0;
             //private int currentNodeCounter = 0;
 
         //Default Constructor
@@ -54,122 +55,83 @@ namespace HeapClassLibrary
         //Public Class Methods
         public int Remove()
         {
-            if (heapArray[0] == EMPTY && heapArray[1] == EMPTY)
-            {
-                throw new ArgumentException("Cannot remove from an empty heap");
-            }
+            //take the top value on the array, and store in temp
+            //set the last value in the arrray to parent
+            //call trickle down
             int temp = heapArray[0];
-            heapArray[0] = EMPTY;
-            Sort(0); //this sorts from the top down and places the largest value at the top
+            heapArray[0] = heapArray[currentIndex - 1];
+            heapArray[currentIndex - 1] = EMPTY;
+            TrickleDown();
             return temp;
         }
 
         public void Insert(int value)
         {
             //adds value to heap under condition that the heap is not full
-            //call traverseTree and pass in first heap 0 index
-            //use the returned traverse index to add value
-            //call sort method
+            //add value to the first available empty space
+            //call bubbleup method
             if (IsHeapFull() == true)
             {
                 BuildNewHeap();
-                int addAtIndex = TraverseTree(0);
-                AddValue(addAtIndex, value);
-                //Sort(addAtIndex);
             }
-            else
-            {
-                int addAtIndex = TraverseTree(0);
-                AddValue(addAtIndex, value);
-                //Sort(addAtIndex);
-            }
+            AddValue(currentIndex, value);
+            BubbleUp(currentIndex);
+            currentIndex++;
         }
 
         //Private Class Methods
-        //this will walk the tree and return the index of the element to be changed
-        private int TraverseTree(int index)
+        //this will compare the root to its children
+        private void TrickleDown()
         {
-            //start at root
-                //if root is null return 0
-                //if root is not null
-                    //test left
-                    //if left is not empty, test right
-                    //if right is empty, return the right value
-                    //if left is empty
-            if(heapArray[0] == EMPTY)
+            //while the current index value is not greater than or equal to array size AND the current value is not EMPTY
+            //compare the parent to its left and right child
+                //switch the parent with the largest of the children
+                //set the current index to the selected child
+            int index = 0;
+            while ((index < this.size && Right(index) < this.size) && heapArray[index] != EMPTY)
             {
-                return 0;
+                int temp;
+                int parent = heapArray[index];
+                int leftChild = heapArray[Left(index)];
+                int rightChild = heapArray[Right(index)];
+
+                if (rightChild > parent)
+                {
+                    temp = parent;
+                    parent = rightChild;
+                    rightChild = temp;
+                    index = Right(index);
+                }
+                else if (leftChild > parent)
+                {
+                    temp = parent;
+                    parent = leftChild;
+                    leftChild = temp;
+                    index = Left(index);
+                }
             }
-            if (heapArray[Left(index)] == EMPTY && heapArray[Right(index)] == EMPTY)
-            {
-                return Left(index);
-            }
-            else if (heapArray[Right(index)] == EMPTY)
-            {
-                return Right(index);
-            }
-            else //(heapArray[Left(index)] != EMPTY && heapArray[Right(index)] != EMPTY)
-            {
-                return TraverseTree(Left(index));
-                return TraverseTree(Right(index));
-            }
-           /* if (heapArray[Right(index)] != EMPTY)
-            {
-                //index = Right(index);
-                TraverseTree(Right(index));
-            }*/
         }
 
         //this will rearrange the tree if a large value is a leaf, returns no values
-        private void Sort(int index)
+        private void BubbleUp(int index)
         {
-            if(heapArray[0] != EMPTY)
+            //if value that was just added is larger than the parent
+            //swap the parent with the child
+            //repeat process until child is less than parent or parent is null (AKA root)
+            bool isFinished = false;
+            while (isFinished == false)
             {
-
-                //if value that was just added is larger than the parent
-                //swap the parent with the child
-                //repeat process until child is less than parent or parent is null (AKA root)
-                bool isFinished = false;
-                while (isFinished == false)
+                //this block deals with swapping
+                if (heapArray[index] > heapArray[Parent(index)] && index != 0)
                 {
-                    //this block deals with swapping
-                    if (heapArray[index] > heapArray[Parent(index)] && index !=0)
-                    {
-                        int temp = heapArray[Parent(index)];
-                        heapArray[Parent(index)] = heapArray[index];
-                        heapArray[index] = temp;
-                        index = Parent(index);
-                    }
-                    else
-                    {
-                        isFinished = true;
-                    }
+                    int temp = heapArray[Parent(index)];
+                    heapArray[Parent(index)] = heapArray[index];
+                    heapArray[index] = temp;
+                    index = Parent(index);
                 }
-            }
-            else
-            {
-                bool isFinished = false;
-                //compare the left and right children of the root node
-                //find the larger of the two and set it equal to the node
-                //swap the parent with the child
-                //repeat process until child is less than parent or both leaves are null
-                while (isFinished == false)
+                else
                 {
-                    //this block deals with swapping
-                    if (heapArray[Right(index)] > heapArray[Left(index)])
-                    {
-                        heapArray[index] = heapArray[Right(index)];
-                        index = heapArray[Right(index)];
-                    }
-                    else if (heapArray[Right(index)] < heapArray[Left(index)])
-                    {
-                        heapArray[index] = heapArray[Left(index)];
-                        index = heapArray[Left(index)];
-                    }
-                    else
-                    {
-                        isFinished = true;
-                    }
+                    isFinished = true;
                 }
             }
         }
@@ -196,7 +158,7 @@ namespace HeapClassLibrary
         {
             return index = (index - 1) / 2;
         }
-
+        
         //this fills a new instance of a heap array with -1's
         private void NullifyArray()
         {
@@ -230,22 +192,11 @@ namespace HeapClassLibrary
 
         private bool IsHeapFull()
         {
-            int fullCounter = 0;
-            for (int i =0; i <this.size; i++)
-            {
-                if (heapArray[i] != EMPTY)
-                {
-                    fullCounter++;
-                }
-            }
-            if (fullCounter == this.size)
+            if (currentIndex == (this.size - 1))
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
     }
 }

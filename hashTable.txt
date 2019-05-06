@@ -1,0 +1,62 @@
+SEQUENTIAL PROBING
+void additer(value)
+	index = value % size;
+	while(array[index] != -1)
+	index++
+	if (index >= size|)
+		index = 0
+	array[index] = value;
+has tables convert a value into an index within the array
+
+void addItem(value)
+	index = hasher(value)
+	index = findOpen(index)
+	array[index] = value;
+
+bool find(value)
+	index = hasher(value)
+	while(not negative 1 and not ==value)
+		update index
+	if open
+		return false
+	if  == value
+		return true
+set deleted value to -100 (this is done to ensure holes in an array do not terminate the iteration through the array)
+
+QUADRATIC PROBING
+if occupied increment by 1
+
+if occupied increment
+	bx 1
+	bx 2
+	bx 3
+	bx 4
+	bx 5
+	bx 6
+
+ for calcing the unique value of a string:
+(base^6 * n + base^5 * n + base^4 * n + base^3 * n + base^2 * n + base^1 * n + base^0 * n + n)%SIZE
+
+	OR
+
+b^4n + b^3n + b^2i + bc
+ 
+for (i=0; i < length; i ++)
+	index *= base;
+	index += string[i];
+	index %= size;
+
+SEQUENTIAL PROBING, QUADRATIC PROBING, AND REHASH
+
+hash function is constant time, open addressing places something if the value is null, 
+
+
+BUILDING NEW TABLE IF FULL
+oldsize = size;
+oldarr = array
+array = new table[new size]
+size = new size
+for (i = 0; i < ldsize; i ++)
+	if oldarray[i] != empty;
+	oldarr[i] != deleted
+	insertvalue(oldarray[i])
