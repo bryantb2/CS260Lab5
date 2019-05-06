@@ -5,17 +5,23 @@ using System.Text;
 using System.Threading.Tasks;
 using HeapClassLibrary;
 
-namespace PriorityQueue
+namespace PriorityQueueLibrary
 {
     public class PriorityQueue
     {
         //class fields
         private Heap priorityQ;
 
-        //constructor
+        //defined constructor
         public PriorityQueue(int size)
         {
             priorityQ = new Heap(size);
+        }
+
+        //default constructor
+        public PriorityQueue()
+        {
+            priorityQ = new Heap();
         }
 
         public void Insert(int value)

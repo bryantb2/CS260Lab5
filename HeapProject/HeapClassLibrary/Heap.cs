@@ -62,6 +62,7 @@ namespace HeapClassLibrary
             heapArray[0] = heapArray[currentIndex - 1];
             heapArray[currentIndex - 1] = EMPTY;
             TrickleDown();
+            currentIndex--;
             return temp;
         }
 
@@ -88,7 +89,9 @@ namespace HeapClassLibrary
                 //switch the parent with the largest of the children
                 //set the current index to the selected child
             int index = 0;
-            while ((index < this.size && Right(index) < this.size) && heapArray[index] != EMPTY)
+            bool noLongerTrue = true;
+            //Right(index) < this.size && (heapArray[Right(index)] != EMPTY && heapArray[Left(index)] != EMPTY)
+            while (noLongerTrue)
             {
                 int temp;
                 int parent = heapArray[index];
@@ -108,6 +111,10 @@ namespace HeapClassLibrary
                     parent = leftChild;
                     leftChild = temp;
                     index = Left(index);
+                }
+                else
+                {
+                    noLongerTrue = false;
                 }
             }
         }
